@@ -1,1 +1,3 @@
 import %workspace%/build/toolchain/.bazelrc
+
+build --define absl=1
