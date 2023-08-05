@@ -1,0 +1,2 @@
+build --crosstool_top=@com_github_patrice332_bazel_toolchains//:clang_suite
+build --host_crosstool_top=@com_github_patrice332_bazel_toolchains//:clang_suite
