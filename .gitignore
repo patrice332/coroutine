@@ -33,3 +33,7 @@
 
 # Bazel
 bazel-*
+
+# Clangd
+.cache/
+compile_commands.json
