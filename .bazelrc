@@ -1,1 +1,1 @@
-import %workspace%/build/toolchains/.bazelrc
+import %workspace%/build/toolchain/.bazelrc

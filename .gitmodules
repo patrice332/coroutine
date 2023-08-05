@@ -1,3 +1,6 @@
 [submodule "build/toolchains"]
 	path = build/toolchains
 	url = git@github.com:patrice332/bazel-toolchains.git
+[submodule "bazel-toolchains"]
+	path = build/toolchain
+	url = git@github.com:patrice332/bazel-toolchains.git
