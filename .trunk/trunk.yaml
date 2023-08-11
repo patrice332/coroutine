@@ -23,10 +23,18 @@ runtimes:
     - python@3.10.8
 actions:
   enabled:
+    - bazel-compile-commands
     - trunk-announce
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
     - trunk-upgrade-available
+  definitions:
+    - id: bazel-compile-commands
+      display_name: Generate compile command
+      description: Run 'trunk generate-compile-commands' anytime a buildfile changes
+      run: trunk generate-compile-commands
+      triggers:
+        - files: ["**/BUILD", "**/BUILD.bazel", "**/*.bzl", WORKSPACE]
 tools:
   enabled:
-    - bazel@6.2.0
+    - bazel@6.3.0
