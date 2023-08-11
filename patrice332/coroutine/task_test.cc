@@ -26,21 +26,17 @@ TestStack MakeTestStack(std::size_t mem_size) {
       reinterpret_cast<std::byte*>(std::aligned_alloc(kPageSize, mem_size));
 
   auto stack = MakeStack(std::span<std::byte>{mem, mem_size});
+  if (!stack.ok()) {
+    std::terminate();
+  }
   return TestStack{mem, std::move(stack).value()};
 }
 
 TEST(Task, Sanity) {
   constexpr std::size_t kMemSize = 2 * kPageSize;
-  auto* mem =
-      reinterpret_cast<std::byte*>(std::aligned_alloc(kPageSize, kMemSize));
-  {
-    auto stack = MakeStack(std::span<std::byte>{mem, kMemSize});
+  auto stack = MakeTestStack(kMemSize);
 
-    ASSERT_TRUE(stack.ok());
-
-    Task task{stack.value()};
-  }
-  free(mem);
+  Task task{stack.Stack};
 }
 
 TEST(Task, Called) {
