@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sys/ucontext.h>
 #include <ucontext.h>
 
 #include "absl/status/status.h"
@@ -19,7 +20,9 @@ class Task {
   ~Task() = default;
 
   absl::Status Init(void (*func)(void*), void* data);
-  absl::Status Resume();
+  absl::Status ResumeFrom(ucontext_t& from_context);
+
+  constexpr ucontext_t* GetContext() { return &context_; }
 
  private:
   enum class State {

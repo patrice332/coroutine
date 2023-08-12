@@ -3,11 +3,12 @@
 #include <ucontext.h>
 
 #include "absl/status/status.h"
+#include "patrice332/coroutine/runtime.hh"
 
 namespace patrice332::coroutine {
 
 namespace {
-thread_local ucontext_t local_context;
+thread_local ucontext_t task_creation_context;
 
 struct TaskSetupOptions {
   void (*Func)(void*);
@@ -20,8 +21,9 @@ void InitTask(void* ptr) {
   void (*func)(void*) = options->Func;
   void* data = options->Data;
   ucontext_t* current_context = options->CurrentContext;
-  swapcontext(current_context, &local_context);
+  swapcontext(current_context, &task_creation_context);
   func(data);
+  TaskExit();
 }
 
 }  // namespace
@@ -39,23 +41,23 @@ absl::Status Task::Init(void (*func)(void*), void* data) {
 
   context_.uc_stack.ss_sp = stack.data();
   context_.uc_stack.ss_size = stack.size();
-  context_.uc_link = &local_context;
+  context_.uc_link = &task_creation_context;
 
   TaskSetupOptions options{
       .Func = func, .Data = data, .CurrentContext = &context_};
 
   makecontext(&context_, reinterpret_cast<void (*)()>(&InitTask), 1, &options);
-  swapcontext(&local_context, &context_);
+  swapcontext(&task_creation_context, &context_);
 
   state_ = State::kInitialized;
   return absl::OkStatus();
 }
 
-absl::Status Task::Resume() {
+absl::Status Task::ResumeFrom(ucontext_t& from_context) {
   if (state_ != State::kInitialized) {
     return absl::FailedPreconditionError("Task is not in initialized state");
   }
-  swapcontext(&local_context, &context_);
+  swapcontext(&from_context, &context_);
   return absl::OkStatus();
 }
 

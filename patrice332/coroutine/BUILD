@@ -16,6 +16,21 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "runtime",
+    srcs = [
+        "runtime.cc",
+        "task.cc",
+    ],
+    hdrs = [
+        "runtime.hh",
+        "task.hh",
+    ],
+    deps = [
+        ":stack",
+    ],
+)
+
 cc_test(
     name = "stack_test",
     srcs = [
@@ -27,26 +42,13 @@ cc_test(
     ],
 )
 
-cc_library(
-    name = "task",
-    srcs = [
-        "task.cc",
-    ],
-    hdrs = [
-        "task.hh",
-    ],
-    deps = [
-        ":stack",
-    ],
-)
-
 cc_test(
-    name = "task_test",
+    name = "runtime_test",
     srcs = [
-        "task_test.cc",
+        "runtime_test.cc",
     ],
     deps = [
-        ":task",
+        ":runtime",
         "@com_google_googletest//:gtest_main",
     ],
 )
