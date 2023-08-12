@@ -20,6 +20,7 @@ cc_library(
     name = "runtime",
     srcs = [
         "runtime.cc",
+        "runtime_internal.hh",
         "task.cc",
     ],
     hdrs = [

@@ -23,6 +23,4 @@ absl::Status LoopOnce();
 // Run loop till |stop| is true
 absl::Status Loop();
 
-void TaskExit();
-
 }  // namespace patrice332::coroutine

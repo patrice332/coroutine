@@ -4,6 +4,7 @@
 
 #include "absl/status/status.h"
 #include "patrice332/coroutine/runtime.hh"
+#include "patrice332/coroutine/runtime_internal.hh"
 
 namespace patrice332::coroutine {
 
@@ -23,7 +24,7 @@ void InitTask(void* ptr) {
   ucontext_t* current_context = options->CurrentContext;
   swapcontext(current_context, &task_creation_context);
   func(data);
-  TaskExit();
+  internal::TaskExit();
 }
 
 }  // namespace
