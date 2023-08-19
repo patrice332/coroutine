@@ -7,7 +7,7 @@ plugins:
       ref: v0.0.6
       uri: https://github.com/trunk-io/configs
     - id: trunk
-      ref: v1.1.1
+      ref: v1.2.1
       uri: https://github.com/trunk-io/plugins
 lint:
   enabled:
@@ -40,4 +40,4 @@ actions:
         - files: ["**/BUILD", "**/BUILD.bazel", "**/*.bzl", WORKSPACE]
 tools:
   enabled:
-    - bazel@6.3.0
+    - bazel@6.3.2
